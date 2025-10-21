@@ -22,7 +22,7 @@ public class Rental {
 
     public Rental() {}
 
-    // Конструкторы по желанию
+    // Конструктор
     public Rental(String address, Integer rooms, BigDecimal monthlyPrice) {
         this.address = address;
         this.rooms = rooms;

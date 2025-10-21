@@ -44,7 +44,7 @@ public class RentalController {
         }
         rentalRepository.save(rental);
         ra.addFlashAttribute("successMessage", "Сохранено успешно");
-        return "redirect:/rentals";
+        return "redirect:/rentals";  // обновление списка
     }
 
     // Редактировать - показать форму с заполненными данными
