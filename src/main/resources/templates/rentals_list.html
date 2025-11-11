@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" />
     <title>Аренда квартир — Список</title>
@@ -8,11 +9,17 @@
 <body>
 <div class="container">
     <header>
+        <div style="text-align:right; margin-bottom:12px;" sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="btn">Выйти</button>
+            </form>
+        </div>
         <h1>Аренда квартир</h1>
         <p class="subtitle">Список объявлений</p>
     </header>
 
-    <div class="actions">
+    <!-- Кнопка "Добавить объявление" только для ADMIN -->
+    <div class="actions" sec:authorize="hasRole('ADMIN')">
         <a class="btn primary" th:href="@{/rentals/new}">Добавить объявление</a>
     </div>
 
@@ -27,7 +34,8 @@
             <th>Адрес</th>
             <th>Комнат</th>
             <th>Цена в месяц</th>
-            <th>Действия</th>
+            <!-- Столбец "Действия" виден только ADMIN -->
+            <th sec:authorize="hasRole('ADMIN')">Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -36,7 +44,9 @@
             <td th:text="${rental.address}">ул. Пример, д.1</td>
             <td th:text="${rental.rooms}">2</td>
             <td th:text="${#numbers.formatDecimal(rental.monthlyPrice, 2, 'COMMA', 3, 'POINT')}">1000.00</td>
-            <td>
+
+            <!-- Действия: только ADMIN -->
+            <td sec:authorize="hasRole('ADMIN')">
                 <a class="btn" th:href="@{|/rentals/edit/${rental.id}|}">Редактировать</a>
                 <a class="btn danger" th:href="@{|/rentals/delete/${rental.id}|}"
                    th:onclick="return confirm('Удалить объявление с ID=' + ${rental.id} + '?')">Удалить</a>
